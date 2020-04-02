@@ -19,7 +19,7 @@ public class BarComponent extends JPanel implements ActionListener {
    
    //Main container
    private final JPanel mainPanel = new JPanel();
-   
+ 
    //Arrays for components
    private JTextField[] valueTexts;
    private JPanel[] barPanels;
@@ -27,10 +27,12 @@ public class BarComponent extends JPanel implements ActionListener {
 
    //Component constructor
    public BarComponent(){
+       setLayout(new BorderLayout());
+       
        mainPanel.setLayout(new FlowLayout());
-       add(mainPanel);
+       add(mainPanel, BorderLayout.CENTER);
    }
-   
+
     //Getters
     public int getBarsNumber() {
         return barsNumber;
@@ -55,20 +57,22 @@ public class BarComponent extends JPanel implements ActionListener {
          {
                         //Sub-panels for labels,textfields and bars
                         barPanels[i] = new JPanel();
-                        barPanels[i].setLayout(new FlowLayout());
+                        barPanels[i].setLayout(new BorderLayout());
                         
                         //Textfields for bars' values
                         valueTexts[i] = new JTextField(3);
                         valueTexts[i].addActionListener(this);
+                        valueTexts[i].setHorizontalAlignment(JTextField.CENTER);
                         
                         //Bars
                         progressBars[i] = new JProgressBar(0,100);
                         progressBars[i].setOrientation(SwingConstants.VERTICAL);
                         
                         //Adding all components to sub-panels
-                        barPanels[i].add(progressBars[i]);
-                        barPanels[i].add(new JLabel("Bar number " + (i+1)));
-                        barPanels[i].add(valueTexts[i]);
+                        barPanels[i].add(progressBars[i], BorderLayout.CENTER);
+                        barPanels[i].add(new JLabel("Bar number " + (i+1)),
+                                BorderLayout.SOUTH);
+                        barPanels[i].add(valueTexts[i], BorderLayout.NORTH);
                        
                         //Adding sub-panels to main container
                         mainPanel.add(barPanels[i]);
