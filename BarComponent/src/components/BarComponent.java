@@ -10,12 +10,16 @@ package components;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import javax.swing.border.*;
  
 public class BarComponent extends JPanel implements ActionListener {
    
    //Properties
    private int barsNumber;
    private Color barsColor;
+   private String diagramTitle;
+
    
    //Main container
    private final JPanel mainPanel = new JPanel();
@@ -26,6 +30,17 @@ public class BarComponent extends JPanel implements ActionListener {
    private JProgressBar[] progressBars;
    private JTextField[] barName;
    private JLabel[] barLabel;
+   
+   
+   
+   
+
+    
+
+    
+        
+       
+    
 
    //Component constructor
    public BarComponent(){
@@ -39,6 +54,12 @@ public class BarComponent extends JPanel implements ActionListener {
     public int getBarsNumber() {
         return barsNumber;
     }
+     public String getDiagramTitle() {
+        return diagramTitle;
+    }
+
+   
+   
    
     public Color getBarsColor() {
         return barsColor;
@@ -87,6 +108,14 @@ public class BarComponent extends JPanel implements ActionListener {
     public void setBarsColor(Color barsColor) {
         this.barsColor = barsColor;
         UIManager.put("ProgressBar.foreground", barsColor);
+    }
+     public void setDiagramTitle(String diagramTitle) {
+        this.diagramTitle = diagramTitle;
+        
+         TitledBorder border = BorderFactory.createTitledBorder(diagramTitle);
+         border.setTitleJustification(TitledBorder.CENTER);
+      
+        mainPanel.setBorder(border);
     }
 
     
