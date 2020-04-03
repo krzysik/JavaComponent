@@ -24,6 +24,8 @@ public class BarComponent extends JPanel implements ActionListener {
    private JTextField[] valueTexts;
    private JPanel[] barPanels;
    private JProgressBar[] progressBars;
+   private JTextField[] barName;
+   private JLabel[] barLabel;
 
    //Component constructor
    public BarComponent(){
@@ -52,6 +54,8 @@ public class BarComponent extends JPanel implements ActionListener {
         barPanels = new JPanel[barsNumber];
         valueTexts = new JTextField[barsNumber];
         progressBars = new JProgressBar[barsNumber];
+        barName = new JTextField[barsNumber];
+        barLabel = new JLabel[barsNumber];
        
          for(int i=0; i<barPanels.length; i++)
          {
@@ -70,8 +74,9 @@ public class BarComponent extends JPanel implements ActionListener {
                         
                         //Adding all components to sub-panels
                         barPanels[i].add(progressBars[i], BorderLayout.CENTER);
-                        barPanels[i].add(new JLabel("Bar number " + (i+1)),
-                                BorderLayout.SOUTH);
+                        barName[i] = new JTextField(3);
+                        barName[i].addActionListener(this);
+                        barPanels[i].add(barName[i], BorderLayout.SOUTH);
                         barPanels[i].add(valueTexts[i], BorderLayout.NORTH);
                        
                         //Adding sub-panels to main container
@@ -103,7 +108,7 @@ public class BarComponent extends JPanel implements ActionListener {
                             + "Dozwolone wartości: " + min + " do " + max);    
                     }
                     else{
-                    progressBars[i].setValue(value);    
+                    progressBars[i].setValue(value);
                     }
                 }
                 catch(NumberFormatException ex){
@@ -111,6 +116,26 @@ public class BarComponent extends JPanel implements ActionListener {
                             + "liczby całkowite!");
                 }
             }
+            
+            else if(o==barName[i]){
+             
+             barLabel[i] = new JLabel("");
+             String name = barName[i].getText();
+              
+                try{
+                  
+                    barPanels[i].remove(barName[i]);
+                    barLabel[i].setText(name);
+                    barPanels[i].add(barLabel[i], BorderLayout.SOUTH);
+               
+                    repaint(); revalidate(); 
+                }
+                catch(Exception ex){
+                  
+                   JOptionPane.showMessageDialog(null, "Nazwa nie może być pusta!");
+                }
+              }
+        
+            }
         }
     }
-}
