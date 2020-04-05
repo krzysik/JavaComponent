@@ -31,17 +31,6 @@ public class BarComponent extends JPanel implements ActionListener {
    private JTextField[] barName;
    private JLabel[] barLabel;
    
-   
-   
-   
-
-    
-
-    
-        
-       
-    
-
    //Component constructor
    public BarComponent(){
        setLayout(new BorderLayout());
