@@ -8,51 +8,43 @@
 package components;
  
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
 import javax.swing.*;
-
 import javax.swing.border.*;
- 
-public class BarComponent extends JPanel implements ActionListener {
+
+public class BarComponent extends JPanel {
    
    //Properties
    private int barsNumber;
    private Color barsColor;
-   private String barsDiagramTitle;
-   private int minValue;
-   private int maxValue;
-
-   private JPanel infoPanel;
-   private JLabel minText;
-   private JLabel maxText;
-   private JLabel minLabel;
-   private JLabel maxLabel;
+   private Color barDiagramFontColor;
+   private int barsMinValue;
+   private int barsMaxValue;
+   private Border barDiagramBorder;
+   private Border barsBorder;
+   private boolean isReady;
+   private boolean isBarValueShown;
+   private int[] barValues;
+   private String[] barsNames;
    
+   //Support variables
    private int number;
    private int min=0;
    private int max=100;
    
    //Main container
    private final JPanel mainPanel = new JPanel();
+   
+   //Main container components
+   private JPanel infoPanel;
+   private JLabel minText;
+   private JLabel maxText;
+   private JLabel minLabel;
+   private JLabel maxLabel;
  
    //Arrays for components
-   private JTextField[] valueTexts;
    private JPanel[] barPanels;
    private JProgressBar[] progressBars;
    private JLabel[] barsLabels;
-   
-   private int[] barValues;
-   private int[] values;
-
-   private String[] barsNames;
-   private String[] names;
-   
-   
-   
-   
-
-   
    
    //Component constructor
    public BarComponent(){
@@ -68,43 +60,59 @@ public class BarComponent extends JPanel implements ActionListener {
        mainPanel.setLayout(new FlowLayout());
        add(infoPanel, BorderLayout.NORTH);
        add(mainPanel, BorderLayout.CENTER);
-      
    }
 
-        public String[] getBarsNames() {
-        return barsNames;
-    }
-
-        public void setBarsNames(String[] barsNames) {
-        this.barsNames = barsNames;
-        names = new String[number];
-        names = barsNames.clone();
-        
-        for(int i=0; i<number; i++)
-        {
-            barsLabels[i].setText(names[i]);
-        }
-        
-    }
-   
     //Getters
+    public Border getBarDiagramBorder() {
+        return barDiagramBorder;
+    }
+    public Color getBarDiagramFontColor() {
+        return barDiagramFontColor;
+    }
     public int getBarsNumber() {
         return barsNumber;
-    }
-    public String getBarsDiagramTitle() {
-        return barsDiagramTitle;
     }
     public Color getBarsColor() {
         return barsColor;
     }
-    public int getMinValue() {
-        return minValue;
+    public int getBarsMinValue() {
+        return barsMinValue;
     }
-    public int getMaxValue() {
-        return maxValue;
+    public int getBarsMaxValue() {
+        return barsMaxValue;
+    }
+    public int[] getBarValues() {
+        return barValues;
+    }
+    public String[] getBarsNames() {
+        return barsNames;
+    }
+    public Border getBarsBorder() {
+        return barsBorder;
+    }
+    public boolean isIsBarValueShown() {
+        return isBarValueShown;
+    }
+    public boolean isIsReady() {
+        return isReady;
     }
     
     //Setters
+    public void setBarDiagramBorder(Border barDiagramBorder) {
+        this.barDiagramBorder = barDiagramBorder;
+    }
+    public void setBarDiagramFontColor(Color barDiagramFontColor) {
+        this.barDiagramFontColor = barDiagramFontColor;
+        minLabel.setForeground(barDiagramFontColor);
+        maxLabel.setForeground(barDiagramFontColor);
+        minText.setForeground(barDiagramFontColor);
+        maxText.setForeground(barDiagramFontColor);
+        
+        for(int i=0; i<number;i++)
+        {
+            barsLabels[i].setForeground(barDiagramFontColor);
+        }
+    }
     public void setBarsNumber(int barsNumber) {
         this.barsNumber = barsNumber;
         //Removes old bars, when typed new bar number
@@ -112,35 +120,26 @@ public class BarComponent extends JPanel implements ActionListener {
         number=barsNumber;
         //Arrays initialize according to value set in barsNumber property
         barPanels = new JPanel[barsNumber];
-        valueTexts = new JTextField[barsNumber];
         progressBars = new JProgressBar[barsNumber];
         barsLabels = new JLabel[barsNumber];
-        names = new String[barsNumber];
+        
        
          for(int i=0; i<barPanels.length; i++)
          {
-             
-             
-             
                         //Sub-panels for labels,textfields and bars
                         barPanels[i] = new JPanel();
                         barPanels[i].setLayout(new BorderLayout());
-                        
-                        //Textfields for bars' values
-                        valueTexts[i] = new JTextField(3);
-                        valueTexts[i].addActionListener(this);
-                        valueTexts[i].setHorizontalAlignment(JTextField.CENTER);
-                        
+                   
                         //Bars
                         progressBars[i] = new JProgressBar(0,100);
                         progressBars[i].setOrientation(SwingConstants.VERTICAL);
+                       
                         
                         //Adding all components to sub-panels
                         barPanels[i].add(progressBars[i], BorderLayout.CENTER);
                         barsLabels[i] = new JLabel("Label: "+(i+1));
-                        names[i] = barsLabels[i].getText();
                         barPanels[i].add(barsLabels[i], BorderLayout.SOUTH);
-                        barPanels[i].add(valueTexts[i], BorderLayout.NORTH);
+                        
                        
                         //Adding sub-panels to main container
                         mainPanel.add(barPanels[i]);
@@ -150,20 +149,10 @@ public class BarComponent extends JPanel implements ActionListener {
     }
     public void setBarsColor(Color barsColor) {
         this.barsColor = barsColor;
-        UIManager.put("ProgressBar.foreground", barsColor);
-        
     }
-    public void setBarsDiagramTitle(String barsDiagramTitle) {
-        this.barsDiagramTitle = barsDiagramTitle;
-        
-         TitledBorder border = BorderFactory.createTitledBorder(barsDiagramTitle);
-         border.setTitleJustification(TitledBorder.CENTER);
-      
-        mainPanel.setBorder(border);
-    }
-    public void setMinValue(int minValue) {
-        this.minValue = minValue;
-        minText.setText(String.valueOf(minValue));
+    public void setBarsMinValue(int barsMinValue) {
+        this.barsMinValue = barsMinValue;
+        minText.setText(String.valueOf(barsMinValue));
         min = Integer.parseInt(minText.getText());
         minLabel.setText("Minimum: " + minText.getText());
         
@@ -172,9 +161,9 @@ public class BarComponent extends JPanel implements ActionListener {
             progressBars[i].setMinimum(min);
         }
     }
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
-        maxText.setText(String.valueOf(maxValue));
+    public void setBarsMaxValue(int barsMaxValue) {
+        this.barsMaxValue = barsMaxValue;
+        maxText.setText(String.valueOf(barsMaxValue));
         max = Integer.parseInt(maxText.getText());
         maxLabel.setText("Maksimum: " + maxText.getText());
         
@@ -183,73 +172,47 @@ public class BarComponent extends JPanel implements ActionListener {
             progressBars[i].setMaximum(max);
         }
     }
-
-//    public int[] getBarValues() {
-//        return barValues;
-//    }
-//
-//    public void setBarValues(int[] barValues) {
-//        this.barValues = barValues;
-//        
-//        for(int i=0; i<barsNumber; i++)
-//        {
-//            values[i] = barValues[i];
-//            progressBars[i].setValue(values[i]);
-//        }
-//    }
-
-    
-    
-    
-
-    
-    
-
-    //Events method
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void setBarValues(int[] barValues) {
+        this.barValues = barValues;
+    }
+    public void setBarsNames(String[] barsNames) {
+        this.barsNames = barsNames;
+    }
+    public void setBarsBorder(Border barsBorder){
+        this.barsBorder = barsBorder;
+    }
+    public void setIsBarValueShown(boolean isBarValueShown) {
+        this.isBarValueShown = isBarValueShown;
         
-        Object o = e.getSource();
-        
-        for(int i=0; i<barPanels.length; i++){
-            if(o==valueTexts[i]){
-                
-                
-                
-                try{
-                    int value = Integer.parseInt(valueTexts[i].getText());
-                    if(value>max || value<min){
-                    JOptionPane.showMessageDialog(null, "Poza zakresem! "
-                            + "Dozwolone wartości: " + min + " do " + max);    
-                    }
-                    else{
-                    progressBars[i].setValue(value);
-                    }
-                }
-                catch(NumberFormatException ex){
-                    JOptionPane.showMessageDialog(null, "Dozwolone tylko "
-                            + "liczby całkowite!");
-                }
+        if(isBarValueShown)
+        {
+            for(int i=0; i<number; i++)
+            {
+            progressBars[i].setStringPainted(true); 
             }
             
-//            else if(o==barName[i]){
-//             
-//             barLabel[i] = new JLabel("");
-//             String name = barName[i].getText();
-//              
-//                try{
-//                    barPanels[i].remove(barName[i]);
-//                    barLabel[i].setText(name);
-//                    barPanels[i].add(barLabel[i], BorderLayout.SOUTH);
-//               
-//                    repaint(); revalidate(); 
-//                }
-//                catch(Exception ex){
-//                  
-//                   JOptionPane.showMessageDialog(null, "Nazwa nie może być pusta!");
-//                }
-//              }
-        
-            }
+        }
+        else if(!isBarValueShown)
+        {
+            for(int i=0; i<number; i++)
+            progressBars[i].setStringPainted(false);
         }
     }
+    public void setIsReady(boolean isReady) {
+        this.isReady = isReady;
+        for(int i=0; i<number; i++)
+        {
+            progressBars[i].setValue(barValues[i]);
+            barsLabels[i].setText(barsNames[i]);
+            barsLabels[i].setForeground(barDiagramFontColor);
+            progressBars[i].setForeground(barsColor);
+            progressBars[i].setBorder(barsBorder);
+            progressBars[i].setMinimum(min);
+            progressBars[i].setMaximum(max);
+            mainPanel.setBorder(barDiagramBorder);
+            
+            if(isBarValueShown)
+            progressBars[i].setString(String.valueOf(progressBars[i].getValue()));
+        }
+    }
+}
