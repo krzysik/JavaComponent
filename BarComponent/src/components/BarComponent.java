@@ -151,7 +151,7 @@ public class BarComponent extends JPanel implements ComponentListener {
                         
                         //Adding all components to sub-panels
                         barPanels[i].add(progressBars[i], BorderLayout.CENTER);
-                        barsLabels[i] = new JLabel("Label: "+(i+1));
+                        barsLabels[i] = new JLabel("Label: "+(i+1), SwingConstants.CENTER);
                         barPanels[i].add(barsLabels[i], BorderLayout.SOUTH);
                         
                        
@@ -238,9 +238,14 @@ public class BarComponent extends JPanel implements ComponentListener {
     public void componentResized(ComponentEvent e) {
         for(int i=0; i<barsNumber; i++){
             //TUTAJ TRZEBA WYMYŚLIĆ LICZBY KTÓRE BĘDĄ DOBRZE DZIAŁAĆ PRZY SKALOWANIU
-            barPanels[i].setPreferredSize(new Dimension((mainPanel.getWidth()/barsNumber)-20, mainPanel.getHeight()-20));
-            progressBars[i].setPreferredSize(new Dimension(barPanels[i].getWidth()-10, barPanels[i].getHeight()-30));
-            barsLabels[i].setPreferredSize(new Dimension(barPanels[i].getWidth()-10, barPanels[i].getHeight()-200));
+            barPanels[i].setPreferredSize(new Dimension((mainPanel.getWidth()/barsNumber)-20, (int) ((mainPanel.getHeight()*0.8))));
+            
+            
+            //PRÓBA Z KOLORAMI
+//            if(barPanels[i].getWidth()>300){
+//                barsLabels[i].setFont(barsLabels[i].getFont().deriveFont(30.0f));
+//                barsLabels[i].setForeground(Color.cyan);
+//            } 
             
             //TE DWIE LINIE WAZNE W CHUJ
             mainPanel.revalidate();

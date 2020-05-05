@@ -22,17 +22,16 @@ public class TestApplication extends javax.swing.JFrame {
         setTitle("Aplikacja testująca");
         setBackground(new java.awt.Color(204, 204, 204));
         setLocation(new java.awt.Point(500, 300));
-        setPreferredSize(new java.awt.Dimension(500, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1839, Short.MAX_VALUE)
+            .addGap(0, 441, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 383, Short.MAX_VALUE)
         );
 
         pack();
